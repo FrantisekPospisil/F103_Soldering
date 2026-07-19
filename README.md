@@ -1,6 +1,6 @@
 # F103_Soldering — STM32F103 Soldering Station
 
-(Soldering_PCB.png)
+<img src="images/Soldering_PCB.png" alt="3D model desky" width="500">
 
 Firmware for a home-built temperature-controlled soldering station.
 K-type thermocouple, PI control loop, 16×2 LCD, rotary encoder, settings stored
