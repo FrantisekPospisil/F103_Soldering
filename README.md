@@ -1,5 +1,7 @@
 # F103_Soldering — STM32F103 Soldering Station
 
+(Soldering_PCB.png)
+
 Firmware for a home-built temperature-controlled soldering station.
 K-type thermocouple, PI control loop, 16×2 LCD, rotary encoder, settings stored
 in an SPI EEPROM. Written in C for STM32CubeIDE using a mix of ST's LL and HAL drivers.
