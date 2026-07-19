@@ -1,0 +1,12 @@
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_gpio.h:803:22:LL_GPIO_SetOutputPin	16	static
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_gpio.h:832:22:LL_GPIO_ResetOutputPin	16	static
+../Core/Src/Eeprom.c:19:6:EEPROM_SPI_INIT	16	static
+../Core/Src/Eeprom.c:23:18:EEPROM_SPI_WritePage	24	static
+../Core/Src/Eeprom.c:60:18:EEPROM_SPI_WriteBuffer	32	static
+../Core/Src/Eeprom.c:147:18:EEPROM_SPI_ReadBuffer	24	static
+../Core/Src/Eeprom.c:170:9:EEPROM_SPI_WaitStandbyState	16	static
+../Core/Src/Eeprom.c:188:9:EEPROM_SendByte	24	static
+../Core/Src/Eeprom.c:206:6:sEE_WriteEnable	16	static
+../Core/Src/Eeprom.c:216:6:sEE_WriteDisable	16	static
+../Core/Src/Eeprom.c:225:6:sEE_WriteStatusRegister	24	static
+../Core/Src/Eeprom.c:242:6:EEPROM_SPI_SendInstruction	16	static
