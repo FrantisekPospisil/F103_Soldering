@@ -20,8 +20,6 @@ void LCD_WriteCString( const char* retezec );				// vypise konstantni retezec
 unsigned long int LCD_Mypow( unsigned char m, unsigned char n );
 void LCD_PrintNumber( uint64_t Num, uint8_t NumLen, uint8_t Decimal );
 void LCD_PrTemp( uint16_t val );							// vypisuje teplotu se znamenkem
-void LCD_PrPwm( uint16_t val );								// vypisuje %
-void LCD_PrHex( uint8_t val );								// dva znaky - 8 bitu
-void delay(uint32_t del);									// hloupy delay
+void LCD_PrHex( uint8_t val );								// vypisuje bajt hexadecimalne (dva znaky)
 
 #endif /* INC_HD44780_H_ */

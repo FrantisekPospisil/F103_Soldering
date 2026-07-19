@@ -50,10 +50,9 @@ extern volatile uint16_t		TimerStart;
 extern volatile uint16_t		TimerSec;
 
 extern volatile uint32_t		TemperatureIn;
-extern volatile uint32_t		TemperatureOut;
 extern uint8_t		MeanPointer;
-extern volatile uint16_t		MeanMax;
 extern volatile uint32_t		TemperatureMeasure;
+extern volatile uint16_t		SupplyVoltage;
 
 extern uint16_t		AdResult[8];
 extern uint16_t		AdArray0[65];
@@ -71,7 +70,7 @@ extern volatile uint16_t		AdResult3;
 
 extern volatile uint16_t		TemperatureMin;
 extern volatile uint16_t		TemperatureMax;
-extern volatile uint16_t		TemperatureSet0;
+extern volatile uint16_t		TemperatureStart;
 extern volatile uint16_t		TemperatureSet;
 extern volatile uint16_t		TemperatureSetStandby;
 
@@ -80,18 +79,16 @@ extern volatile uint16_t		StandbyDifference;
 extern volatile uint16_t		StandbyTimerMax;
 extern volatile uint16_t		TimerStandby;
 
-extern volatile uint16_t		Const1;
-extern volatile uint16_t		Const2;
-extern volatile int16_t		Difference;
-extern volatile int32_t		DifferenceIntegral;
-extern volatile int16_t		SolderPWM;
-
-extern volatile uint16_t		CounterTemperature;
+extern volatile uint16_t		RegKp;
+extern volatile uint16_t		RegKi;
+extern volatile int16_t		RegError;
+extern volatile int32_t		RegIntegral;
+extern volatile int16_t		HeaterPower;
 
 extern uint8_t		EepromBuffer[30];
 extern uint8_t		EepromStatus;
 
-/* --- Bezpecnost / watchdog (bod 1, P0) --- */
+/* --- Bezpecnost / watchdog --- */
 extern volatile uint8_t		Fault;			// bitove pole aktivnich poruch (FAULT_*), 0 = OK
 extern volatile uint32_t	PidHeartbeat;	// inkrementuje regulacni smycka (SysTick) - dukaz, ze zije
 extern volatile uint16_t	HeaterFaultSec;	// pocet sekund plneho vykonu bez narustu teploty
@@ -118,12 +115,12 @@ void Beep( uint32_t Tone, uint16_t Time);
 #define FAULT_OVERTEMP     0x02u   /* prekrocen tvrdy teplotni strop */
 #define FAULT_HEATER       0x04u   /* topi naplno, ale teplota neroste */
 #define FAULT_ADC          0x08u   /* zastavil se AD prevodnik / DMA (stara data) */
+#define FAULT_RUNAWAY      0x10u   /* teplota roste, i kdyz je vykon nulovy (topi mimo kontrolu) */
 
 /* ---- Tony bzucaku [Hz] ----
    BZ1 je pasivni piezomenic (R17 1k paralelne s nim). Piezo ma ostrou rezonanci
-   zhruba 3-5 kHz a mimo ni je vyrazne tissi az neslysitelne. Tony jsou proto
-   voleny nahoru; hodnoty odpovidaji tomu, co stanice skutecne hrala pred
-   opravou prepoctu v Beep(). Pro hlasitejsi zvuk jdi blize k 4 kHz. */
+   zhruba 3-5 kHz a mimo ni je vyrazne tissi az neslysitelne, proto jsou tony
+   voleny nahoru. Pro hlasitejsi zvuk jdi blize k 4 kHz. */
 #define TONE_START1        1100u   /* startovni melodie - oktavy 1100/2200/4400 */
 #define TONE_START2        2200u
 #define TONE_START3        4400u
@@ -131,13 +128,20 @@ void Beep( uint32_t Tone, uint16_t Time);
 #define TONE_ERROR          500u   /* chyba EEPROM - nizky ton (na piezu je slabsi) */
 #define TONE_FAULT         4000u   /* opakovany alarm pri poruse */
 #define TONE_ACK           3000u   /* potvrzeni poruchy tlacitkem */
+/* ---- Noty melodii [Hz] - sesta oktava, tonina D moll ----
+   Piezo sice hraje nejhlasiteji kolem 4 kHz, ale tam uz je zvuk neprijemne
+   ostry. Melodie proto lezi v pasmu 1-2 kHz stejne jako startovni sekvence. */
+#define TONE_D6            1175u   /* D6 - zakladni ton (1) */
+#define TONE_E6            1319u   /* E6 - sekunda (2)     */
+#define TONE_F6            1397u   /* F6 - mala tercie (b3) */
+#define TONE_A6            1760u   /* A6 - kvinta (5)      */
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 /* Okamzite vypnuti topeni. Budic Q3 invertuje, takze plna hodnota compare
    (= ARR 1000) drzi gate BUZ11 dole => MOSFET rozepnuty. Stejnou cestou ridi
-   vykon i PID, takze jde o overene "vypnuto" (stav v klidu pri SolderPWM = 0). */
+   vykon i regulator, takze jde o overene "vypnuto" (stav v klidu pri HeaterPower = 0). */
 #define HEATER_OFF()       LL_TIM_OC_SetCompareCH1(TIM2, 1000)
 /* USER CODE END EM */
 
@@ -185,3 +189,4 @@ void Error_Handler(void);
 #endif
 
 #endif /* __MAIN_H */
+

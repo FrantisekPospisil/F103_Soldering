@@ -1,0 +1,32 @@
+# STM32CubeIDE build output
+Debug/
+Release/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.su
+
+# CubeIDE workspace / metadata (neverzovat, je to lokální nastavení IDE)
+.metadata/
+.settings/
+RemoteSystemsTempFiles/
+
+# CubeMX generované soubory, které se dají znovu vygenerovat (volitelné, obvykle se ale verzují)
+# *.ioc.bak
+
+# Log a temp soubory
+*.log
+*.tmp
+*~
+
+# OS specifické soubory
+.DS_Store
+Thumbs.db
+
+# IDE / editor specifické soubory
+.vscode/
+*.swp

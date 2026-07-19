@@ -42,32 +42,6 @@ void LCD_PrHex(uint8_t val) 		// dva znaky - 8 bitu
 	LCD_WriteData(znak+0x37);
 }
 
-// ===========================================================================
-void LCD_PrPwm(uint16_t val) 		// vypisuje procenta 6 znaku
-{
-	unsigned char znak;
-	unsigned char nula = 0;
-	znak = val / 1000;
-	val = val % 1000;
-	if (znak!=0)
-	{
-		LCD_WriteData( znak + 0x30 );
-		nula = 1;
-	}
-	else LCD_WriteData( ' ' );
-	znak = val / 100;
-	val = val % 100;
-	if ((znak!=0) || (nula!=0))
-	{
-		LCD_WriteData( znak + 0x30 );
-	}
-	else LCD_WriteData( ' ' );
-	znak = val / 10;
-	LCD_WriteData( znak + 0x30 );
-	LCD_WriteData( ',' );
-	LCD_WriteData((val % 10) + 0x30);
-	LCD_WriteCString( "%  " );
-}
 
 // ===========================================================================
 void LCD_PrTemp(uint16_t val) 		// vypisuje teplotu 7 znaku
